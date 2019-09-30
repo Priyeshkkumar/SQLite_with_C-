@@ -2,10 +2,11 @@
 
 int main()
 {
+    char id[30] ;
+    char name[30] ;
+    char marks[30] ;
     DB O1 ;
     int choice ;
-    cout<<"\nEnter choice \n1.Create Table \n2.Insert data \n3.Show Data \n4.Delete Entry \n5.Exit :" ;
-    cin>>choice ;
     do
     {
         cout<<"Enter Choice \n1.Create Table \n2.Show table \n3.Insert Data \n4.Delete an entry \n5.Exit: " ;
@@ -18,10 +19,7 @@ int main()
         case 2:O1.showtable() ;
                   break ;
 
-        case 3:char* id ;
-               char* name ;
-               char* marks ;
-               cout<<"Enter id: " ;
+        case 3:cout<<"Enter id: " ;
                cin>>id ;
                cout<<"Enter name: ";
                cin>>name ;

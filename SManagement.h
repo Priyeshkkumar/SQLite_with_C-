@@ -1,6 +1,7 @@
 #include<iostream>
 #include<sqlite3.h>
 #include<string.h>
+#include<stdlib.h>
 
 using namespace std ;
 
@@ -26,7 +27,7 @@ class DB
 
     DB();
     void createtable();
-    void insertdata( char* , char*, char* );
+    void insertdata( char* , char* , char* );
     void showtable();
     void deleteEntry( char* ) ;
     void checkerr();
@@ -35,9 +36,11 @@ class DB
 
 DB :: DB()
 {
-    rc = sqlite3_open("student.db", &db ) ;
-
+    rc = sqlite3_open("Student.db", &db ) ;
     void checkerr() ;
+    string sql ;
+    sql = "SHOW TABLES;" ;
+    rc = sqlite3_exec( db, sql.c_str(), callback, 0 , &zErrmsg ) ;
 }
 
 void DB :: checkerr()
@@ -56,9 +59,10 @@ void DB :: createtable()
     char* zErrmsg = 0 ;
     int rc = 0 ;
     string sql ;
-    sql = "CREATE TABLE 'Student'("
+    sql = "CREATE TABLE IF NOT EXISTS  'Student'("
           "ID INT PRIMARY KEY NOT NULL,"
           "NAME VARCHAR(40) NOT NULL,"
+          "ROLL_NUMBER INT NOT NULL,"
           "TOTAL_MARKS INT NOT NULL);" ;
     rc = sqlite3_exec( db , sql.c_str() , callback , 0 , &zErrmsg ) ;    
     if( rc != SQLITE_OK )
@@ -66,21 +70,23 @@ void DB :: createtable()
         fprintf(stderr, "SQL error: %s\n", zErrmsg);
         sqlite3_free(zErrmsg);
     }
-    else 
+    else
     {
           fprintf(stdout, "Table created successfully with attributes : ID, Name, Total Marks ");
     }
+    system("CLS") ;
 } 
 
-void DB :: insertdata( char* id , char* name, char* marks )
+void DB :: insertdata( char* id , char* name, char* score )
 {
     char* query ;
-    asprintf( &query, "INSERT INTO StudentS(ID, NAME, TOTAL_MARKS) VALUES( ' %s ',' %s ',' %s ' );",id, name, marks ) ;
+    asprintf( &query, "INSERT INTO Student(ID, NAME, TOTAL_MARKS) VALUES( ' %s ',' %s ',' %s ' );",id, name, score ) ;
     //Prepare query
     sqlite3_prepare( db, query, strlen(query), &stmt, NULL ) ;
     //Test it
     rc = sqlite3_step(stmt) ;
     checkerr() ;
+    system("CLS") ;
 }
 
 void DB :: deleteEntry( char* x )
@@ -95,7 +101,7 @@ void DB :: deleteEntry( char* x )
 void DB :: showtable()
 {
     string sql ;
-    sql = "SELECT * FROM 'Students;" ;
+    sql = "SELECT * FROM 'Student;" ;
     rc = sqlite3_exec( db , sql.c_str(),  callback , 0 , &zErrmsg ) ;
     checkerr() ;
 }
