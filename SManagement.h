@@ -38,16 +38,13 @@ DB :: DB()
 {
     rc = sqlite3_open("Student.db", &db ) ;
     void checkerr() ;
-    string sql ;
-    sql = "SHOW TABLES;" ;
-    rc = sqlite3_exec( db, sql.c_str(), callback, 0 , &zErrmsg ) ;
 }
 
 void DB :: checkerr()
 {
     if(rc)
     {
-        cout<<"DB error:"<<sqlite3_errmsg(db) ;
+        cout<<"\n\nDB error:"<<sqlite3_errmsg(db)<<"\n\n" ;
         closeDB() ;
     }
 }
@@ -59,22 +56,21 @@ void DB :: createtable()
     char* zErrmsg = 0 ;
     int rc = 0 ;
     string sql ;
-    sql = "CREATE TABLE IF NOT EXISTS  'Student'("
+    sql = "CREATE TABLE IF NOT EXISTS  Student("
           "ID INT PRIMARY KEY NOT NULL,"
           "NAME VARCHAR(40) NOT NULL,"
-          "ROLL_NUMBER INT NOT NULL,"
           "TOTAL_MARKS INT NOT NULL);" ;
     rc = sqlite3_exec( db , sql.c_str() , callback , 0 , &zErrmsg ) ;    
     if( rc != SQLITE_OK )
     {
+        cout<<"\n\n" ;
         fprintf(stderr, "SQL error: %s\n", zErrmsg);
         sqlite3_free(zErrmsg);
     }
     else
     {
-          fprintf(stdout, "Table created successfully with attributes : ID, Name, Total Marks ");
+          fprintf(stdout, "Table created successfully with attributes : ID, Name, Total Marks\n\n");
     }
-    system("CLS") ;
 } 
 
 void DB :: insertdata( char* id , char* name, char* score )
@@ -86,13 +82,12 @@ void DB :: insertdata( char* id , char* name, char* score )
     //Test it
     rc = sqlite3_step(stmt) ;
     checkerr() ;
-    system("CLS") ;
 }
 
 void DB :: deleteEntry( char* x )
 {
     char* query ;
-    asprintf( &query, "DELETE FROM TABLE 'Students' WHERE ID = ''%s';", x ) ;  			   
+    asprintf( &query, "DELETE FROM TABLE Student WHERE ID = ''%s';", x ) ;  			   
     sqlite3_prepare( db, query, strlen(query), &stmt, NULL ) ;
     rc = sqlite3_step(stmt) ;
     checkerr() ;
@@ -101,7 +96,7 @@ void DB :: deleteEntry( char* x )
 void DB :: showtable()
 {
     string sql ;
-    sql = "SELECT * FROM 'Student;" ;
+    sql = "SELECT * FROM 'Student';" ;
     rc = sqlite3_exec( db , sql.c_str(),  callback , 0 , &zErrmsg ) ;
     checkerr() ;
 }
