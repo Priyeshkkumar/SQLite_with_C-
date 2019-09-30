@@ -2,9 +2,9 @@
 
 int main()
 {
-    char id[30] ;
-    char name[30] ;
-    char marks[30] ;
+    int id ;
+    string name ;
+    int marks ;
     DB O1 ;
     int choice ;
     do
@@ -29,10 +29,10 @@ int main()
                break ;
 
             
-        case 4:char* id2 ;
+        case 4:int id2 ;
                cout<<"Enter id:" ;
                cin>>id2 ;
-               O1.deleteEntry(id) ;
+               O1.deleteEntry(id2) ;
                break ;
 
         default:

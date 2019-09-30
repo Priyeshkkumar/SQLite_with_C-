@@ -27,9 +27,9 @@ class DB
 
     DB();
     void createtable();
-    void insertdata( char* , char* , char* );
+    void insertdata( int , string, int );
     void showtable();
-    void deleteEntry( char* ) ;
+    void deleteEntry( int ) ;
     void checkerr();
     void closeDB() ;
 };
@@ -73,23 +73,20 @@ void DB :: createtable()
     }
 } 
 
-void DB :: insertdata( char* id , char* name, char* score )
+void DB :: insertdata( int id , string name, int score )
 {
-    char* query ;
-    asprintf( &query, "INSERT INTO Student(ID, NAME, TOTAL_MARKS) VALUES( ' %s ',' %s ',' %s ' );",id, name, score ) ;
-    //Prepare query
-    sqlite3_prepare( db, query, strlen(query), &stmt, NULL ) ;
-    //Test it
-    rc = sqlite3_step(stmt) ;
+    string sql ;
+    sql = "INSERT INTO Student( ID , NAME, TOTAL_MARKS ) VALUES('"+ to_string(id) +"' , '" +name+ "'," + to_string(score) + ")";
+    rc = sqlite3_exec( db , sql.c_str() , callback , 0 , &zErrmsg ) ;
     checkerr() ;
 }
 
-void DB :: deleteEntry( char* x )
+void DB :: deleteEntry( int x )
 {
-    char* query ;
-    asprintf( &query, "DELETE FROM TABLE Student WHERE ID = ''%s';", x ) ;  			   
-    sqlite3_prepare( db, query, strlen(query), &stmt, NULL ) ;
-    rc = sqlite3_step(stmt) ;
+    string sql ;
+    sql = "DELETE FROM Student WHERE ID = '"+ to_string(x) + "' ; " ;
+    rc = sqlite3_exec( db , sql.c_str() , callback , 0 , &zErrmsg ) ;
+
     checkerr() ;
 }
 
