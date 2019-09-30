@@ -19,7 +19,7 @@ int main()
         case 2:O1.showtable() ;
                   break ;
 
-        case 3:cout<<"Enter id: " ;
+        case 3:cout<<"\n\nEnter id: " ;
                cin>>id ;
                cout<<"Enter name: ";
                cin>>name ;
